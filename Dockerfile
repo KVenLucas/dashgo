@@ -1,20 +1,27 @@
-# Set image from base on offical node lts alpine
-ARG VERSION=lts-alpine
-FROM node:$VERSION
+# Dockerfile
 
+# Use node alpine as it's a small node image
+FROM node:alpine
 
-# Set working directory
+# Create the directory on the node image 
+# where our Next.js app will live
+RUN mkdir -p /app
+
+# Set /app as the working directory
 WORKDIR /app
 
-# Copy all files
-COPY . .
+# Copy package.json and package-lock.json
+# to the /app working directory
+COPY package*.json /app
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
+# Install dependencies in /app
+RUN yarn install
 
+# Copy the rest of our Next.js folder into /app
+COPY . /app
 
-# Expose the listening port
+# Ensure port 3000 is accessible to our system
 EXPOSE 3000
 
-# Run yarb start script when container starts
-CMD yarn dev
+# Run yarn dev, as we would via the command line 
+CMD ["yarn", "dev"]

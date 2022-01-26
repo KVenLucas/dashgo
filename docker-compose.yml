@@ -1,13 +1,17 @@
-version: '3.9'
+# docker-compose.yml
+
+version: "3"
 
 services:
-  nextjs:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: web
+    restart: always
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
     ports:
       - 3000:3000
-    build: .
-    volumes:
-      - /usr/src/app
-      - /usr/src/app/node_modules
-      - /usr/src/app/.next
-    env_file:
-      - .env
